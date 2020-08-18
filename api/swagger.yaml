@@ -1,0 +1,409 @@
+---
+swagger: "2.0"
+info:
+  description: "__Overview__ <br> Multilogin Rest API v2 is created for Multilogin\
+    \ 3.x versions. Currently, it has only createProfile endpoint however we are planning\
+    \ to add more endpoints soon.<br><br> __Access token__ <br> In order to access\
+    \ Rest API endpoints, you must have an authentication token which is located at\
+    \ app.properties file (.multiloginapp.com directory). <br><br> __Request body__\
+    \ <br> REST API v2 has 3 mandatory parameters in request body: name, os and browser.\
+    \ Therefore, you can create browser profiles with random fingerprints by specifying\
+    \ only name, os and browser parameters (other fingerprints will be altered automatically).<br><br>\
+    \ Here is how you can create profile with random fingerprints: <br><pre>__{<br>\"\
+    name\": \"testProfile\",<br>\"browser\": \"mimic\",<br>\"os\": \"win\",<br>\"\
+    network\": {<br>    \"proxy\": {<br>        \"type\": \"HTTP\",<br>        \"\
+    host\": \"192.168.1.1\",<br>        \"port\": \"1080\",<br>        \"username\"\
+    : \"username\",<br>        \"password\": \"password\"<br>        }<br>    }<br>}__</pre>\
+    \ _You can see all possible request body values in the example of createProfile\
+    \ request._"
+  version: "2.0"
+  title: "Multilogin Rest API v2"
+host: "api.multiloginapp.com"
+basePath: "/v2"
+paths:
+  /profile:
+    post:
+      summary: "createProfile"
+      description: "Create a browser profile"
+      operationId: "create"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "Authentication token"
+        required: true
+        type: "string"
+      - name: "defaultMode"
+        in: "query"
+        description: "Default value for all masking mechanisms"
+        required: false
+        type: "string"
+        default: "FAKE"
+        enum:
+        - "REAL"
+        - "FAKE"
+      - name: "screenWidthMin"
+        in: "query"
+        description: "Minimal screen width"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "screenWidthMax"
+        in: "query"
+        description: "Maximal screen width"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "screenHeightMin"
+        in: "query"
+        description: "Minimal screen width"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "screenHeightMax"
+        in: "query"
+        description: "Maximal screen height"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "browserVersionMin"
+        in: "query"
+        description: "Maximal browser core version"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "browserVersionMax"
+        in: "query"
+        description: "Maximal browser core version"
+        required: false
+        type: "integer"
+        format: "int32"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/MlaProfile"
+      responses:
+        200:
+          $ref: "#/definitions/CreateOkResponse"
+        400:
+          $ref: "#/definitions/CreateErrorResponse"
+      x-swagger-router-controller: "Default"
+definitions:
+  MlaAudioContext:
+    type: "object"
+    required:
+    - "mode"
+    properties:
+      mode:
+        type: "string"
+        enum:
+        - "REAL"
+        - "NOISE"
+  MlaCanvas:
+    type: "object"
+    required:
+    - "mode"
+    properties:
+      mode:
+        type: "string"
+        enum:
+        - "REAL"
+        - "BLOCK"
+        - "NOISE"
+        - "NATURAL"
+  MlaFonts:
+    type: "object"
+    required:
+    - "mode"
+    properties:
+      mode:
+        type: "string"
+        enum:
+        - "REAL"
+        - "FAKE"
+      maskGlyphs:
+        type: "boolean"
+      families:
+        type: "array"
+        items:
+          type: "string"
+  MlaGeolocation:
+    type: "object"
+    required:
+    - "accuracy"
+    - "lat"
+    - "lng"
+    - "mode"
+    properties:
+      mode:
+        type: "string"
+        enum:
+        - "PROMPT"
+        - "BLOCK"
+        - "ALLOW"
+      fillBasedOnExternalIp:
+        type: "boolean"
+      lat:
+        type: "number"
+        format: "double"
+        minimum: -90
+        maximum: 90
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      lng:
+        type: "number"
+        format: "double"
+        minimum: -180
+        maximum: 180
+        exclusiveMinimum: false
+        exclusiveMaximum: false
+      accuracy:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+  MlaMediaDevices:
+    type: "object"
+    required:
+    - "audioInputs"
+    - "audioOutputs"
+    - "mode"
+    - "videoInputs"
+    properties:
+      mode:
+        type: "string"
+        enum:
+        - "REAL"
+        - "FAKE"
+      videoInputs:
+        type: "integer"
+        format: "int32"
+      audioInputs:
+        type: "integer"
+        format: "int32"
+      audioOutputs:
+        type: "integer"
+        format: "int32"
+  MlaNavigator:
+    type: "object"
+    properties:
+      userAgent:
+        type: "string"
+      resolution:
+        type: "string"
+      language:
+        type: "string"
+      platform:
+        type: "string"
+      doNotTrack:
+        type: "string"
+      hardwareConcurrency:
+        type: "integer"
+        format: "int32"
+  MlaNetworkConf:
+    type: "object"
+    properties:
+      proxy:
+        $ref: "#/definitions/MlaProxyConf"
+      dns:
+        type: "array"
+        items:
+          type: "string"
+        maxItems: 1
+        minItems: 0
+  MlaPlugins:
+    type: "object"
+    properties:
+      enableVulnerable:
+        type: "boolean"
+      enableFlash:
+        type: "boolean"
+  MlaProfile:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+      name:
+        type: "string"
+        minLength: 1
+        maxLength: 2147483647
+      notes:
+        type: "string"
+        minLength: 1
+        maxLength: 2147483647
+      browser:
+        type: "string"
+        pattern: "mimic|stealthfox"
+      os:
+        type: "string"
+        pattern: "lin|mac|win"
+      navigator:
+        $ref: "#/definitions/MlaNavigator"
+      storage:
+        $ref: "#/definitions/MlaStorageConf"
+      network:
+        $ref: "#/definitions/MlaNetworkConf"
+      plugins:
+        $ref: "#/definitions/MlaPlugins"
+      timezone:
+        $ref: "#/definitions/MlaTimezone"
+      geolocation:
+        $ref: "#/definitions/MlaGeolocation"
+      audioContext:
+        $ref: "#/definitions/MlaAudioContext"
+      canvas:
+        $ref: "#/definitions/MlaCanvas"
+      fonts:
+        $ref: "#/definitions/MlaFonts"
+      mediaDevices:
+        $ref: "#/definitions/MlaMediaDevices"
+      webRTC:
+        $ref: "#/definitions/MlaWebRTC"
+    example:
+      name: "testProfile"
+      notes: "Test profile notes"
+      browser: "mimic"
+      os: "win"
+      navigator:
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:62.0) Gecko/20100101\
+          \ Firefox/62.0"
+        resolution: "1280x720"
+        language: "en-US,en;q=0.9"
+        platform: "Win64"
+        doNotTrack: 0
+        hardwareConcurrency: 4
+      storage:
+        local: true
+        extensions: true
+        bookmarks: true
+        history: true
+        passwords: true
+      network:
+        proxy:
+          type: "HTTP"
+          host: "192.168.1.1"
+          port: "1080"
+          username: "username"
+          password: "password"
+        dns:
+        - "8.8.8.8"
+      plugins:
+        enableVulnerable: true
+        enableFlash: true
+      timezone:
+        mode: "FAKE"
+        fillBasedOnExternalIp: true
+      geolocation:
+        mode: "PROMPT"
+        fillBasedOnExternalIp: false
+        lat: 27.001000000000001222133505507372319698333740234375
+        lng: 27.001000000000001222133505507372319698333740234375
+        accuracy: 10
+      audioContext:
+        mode: "NOISE"
+      canvas:
+        mode: "NOISE"
+      fonts:
+        mode: "FAKE"
+        maskGlyphs: true
+        families:
+        - "MS Serif"
+        - "Segoe UI"
+      mediaDevices:
+        mode: "FAKE"
+        videoInputs: 1
+        audioInputs: 2
+        audioOutputs: 3
+      webRTC:
+        mode: "FAKE"
+        fillBasedOnExternalIp: false
+        publicIp: "192.168.1.1"
+        localIp: "172.16.1.1"
+  MlaProxyConf:
+    type: "object"
+    required:
+    - "host"
+    - "type"
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "NONE"
+        - "HTTP"
+        - "SOCKS"
+      host:
+        type: "string"
+      port:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 65535
+      username:
+        type: "string"
+      password:
+        type: "string"
+  MlaStorageConf:
+    type: "object"
+    properties:
+      local:
+        type: "boolean"
+      extensions:
+        type: "boolean"
+      bookmarks:
+        type: "boolean"
+      history:
+        type: "boolean"
+      passwords:
+        type: "boolean"
+  MlaTimezone:
+    type: "object"
+    required:
+    - "mode"
+    - "zoneId"
+    properties:
+      mode:
+        type: "string"
+        enum:
+        - "REAL"
+        - "FAKE"
+      fillBasedOnExternalIp:
+        type: "boolean"
+      zoneId:
+        type: "string"
+  MlaWebRTC:
+    type: "object"
+    required:
+    - "mode"
+    properties:
+      mode:
+        type: "string"
+        enum:
+        - "REAL"
+        - "BLOCK"
+        - "FAKE"
+      fillBasedOnExternalIp:
+        type: "boolean"
+      publicIp:
+        type: "string"
+      localIps:
+        type: "array"
+        items:
+          type: "string"
+  CreateOkResponse:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+        example: "profile id"
+    description: "OK response"
+  CreateErrorResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        example: "ERROR"
+      value:
+        type: "string"
+        example: "error details"
+    description: "ERROR response"

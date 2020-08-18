@@ -1,0 +1,537 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Multilogin Local REST API can be used in order to start, stop, share, clone browser profile/-s. You can also check if the profile is already running on your machine by using checkProfileRunning endpoint and import cookies by using cookieImportJSON/cookieImportNetscape endpoint.",
+    "version": "1.0",
+    "title": "Multilogin Local REST API"
+  },
+  "host": "127.0.0.1:35000",
+  "basePath": "/api/v1/profile",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/start": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "startProfile",
+        "description": "Launch browser profile",
+        "operationId": "StartGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "query",
+            "description": "Browser profile ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/MainOkResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/MainErrorResponse"
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/start?profileId={{profileID}}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "startProfile",
+            "x-testDescription": "Launch browser profile"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        },
+        "x-swagger-router-controller": "MiscService"
+      }
+    },
+    "/stop": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "stopProfile",
+        "description": "Stop browser profile",
+        "operationId": "StopGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "query",
+            "description": "Browser profile ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/MainOkResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/MainErrorResponse"
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/stop?profileId={{profileID}}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "stopProfile",
+            "x-testDescription": "Stop browser profile"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        },
+        "x-swagger-router-controller": "Misc"
+      }
+    },
+    "/active": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "checkProfileRunning",
+        "description": "Check if profile is already running",
+        "operationId": "ActiveGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "query",
+            "description": "Browser profile ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/ProfileActiveOkResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/ProfileActiveErrorResponse"
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/active?profileId={{profileID}}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "checkProfileRunning",
+            "x-testDescription": "Check if profile is already running"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        },
+        "x-swagger-router-controller": "Misc"
+      }
+    },
+    "/share": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "shareProfile",
+        "description": "Share browser profile",
+        "operationId": "ShareGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "query",
+            "description": "Browser profile ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "description": "Multilogin account (email address) to share profile with",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/MainOkResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/MainErrorResponse"
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/share?profileId={{profileID}}&user={{user}}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "shareProfile",
+            "x-testDescription": "Share browser profile"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        },
+        "x-swagger-router-controller": "Misc"
+      }
+    },
+    "/clone": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "cloneProfile",
+        "description": "Clone browser profile",
+        "operationId": "ByProfileIDGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "query",
+            "description": "Browser profile ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/CloneOkResonse"
+          },
+          "500": {
+            "$ref": "#/definitions/MainErrorResponse"
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        },
+        "x-swagger-router-controller": "Misc"
+      }
+    },
+    "/cookies/import/webext": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "cookieImportJSON",
+        "description": "Import Cookies in JSON format",
+        "operationId": "CookiesImportWebextGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "query",
+            "description": "Browser profile ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Cookies in application/json format",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CookieJSONExample"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/MainOkResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/MainErrorResponse"
+          }
+        },
+        "x-swagger-router-controller": "Misc"
+      }
+    },
+    "/cookies/import/netscape": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "cookieImportNetscape",
+        "description": "Import Cookies in Netscape format",
+        "operationId": "CookiesImportNetscapeGet",
+        "produces": [
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "query",
+            "description": "Browser profile ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Cookies in text/plain format",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CookieNetscapeExample"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/MainOkResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/MainErrorResponse"
+          }
+        },
+        "x-swagger-router-controller": "Misc"
+      }
+    }
+  },
+  "definitions": {
+    "ProfileActiveOkResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "value": {
+          "type": "string",
+          "example": "true"
+        }
+      },
+      "description": "OK response, profile is already launched"
+    },
+    "ProfileActiveErrorResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "value": {
+          "type": "string",
+          "example": "false"
+        }
+      },
+      "description": "ERROR response, profile is not launched"
+    },
+    "MainOkResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "OK"
+        }
+      },
+      "description": "OK response"
+    },
+    "MainErrorResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "ERROR"
+        }
+      },
+      "description": "ERROR response"
+    },
+    "CloneOkResonse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "0814fbc9-0f22-4150-9bcc-b2122997ede5"
+          }
+        }
+      },
+      "description": "OK response"
+    },
+    "CookieJSONExample": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": ".multilogin.com"
+        },
+        "expirationDate": {
+          "type": "string",
+          "example": "1556611111"
+        },
+        "hostOnly": {
+          "type": "boolean",
+          "example": false
+        },
+        "httpOnly": {
+          "type": "boolean",
+          "example": false
+        },
+        "name": {
+          "type": "string",
+          "example": "_first_pageview"
+        },
+        "path": {
+          "type": "string",
+          "example": "/"
+        },
+        "sameSite": {
+          "type": "string",
+          "example": "no_restriction"
+        },
+        "secure": {
+          "type": "boolean",
+          "example": false
+        },
+        "session": {
+          "type": "boolean",
+          "example": false
+        },
+        "storeId": {
+          "type": "string",
+          "example": "1"
+        },
+        "value": {
+          "type": "string",
+          "example": "3"
+        },
+        "id": {
+          "type": "integer",
+          "example": 5
+        }
+      },
+      "example": {
+        "path": "/",
+        "session": false,
+        "domain": ".multilogin.com",
+        "hostOnly": false,
+        "sameSite": "no_restriction",
+        "name": "_first_pageview",
+        "httpOnly": false,
+        "id": 5,
+        "secure": false,
+        "storeId": "1",
+        "value": "3",
+        "expirationDate": "1556611111"
+      }
+    },
+    "CookieNetscapeExample": {
+      "type": "object",
+      "properties": {
+        "YourNetscapeCookies": {
+          "type": "string",
+          "example": "In .txt format"
+        }
+      },
+      "example": {
+        "YourNetscapeCookies": "In .txt format"
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+<html>
+
+<head>
+  <title>Multilogin</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>Multilogin</h1>
+  <p><a href="/profiles/create">/profiles/create</a> создание профиля в мультилогине</p>
+  <p><a href="/accounts/login">/accounts/login</a></p>
+  <ul>При запуске скрипта:
+    <li>создается профиль в мультилогине</li>
+    <li>запускается созданный профиль</li>
+    <li>открывается браузер (удаленно на сервере)</li>
+    <li>открывается страница https://www.facebook.com/</li>
+    <li>предпринимается попытка авторизации из имеющихся в файле accounts.txt логинов/паролей</li>
+    <li>если авторизация успешна:
+      <ul>
+        <li>загрузка фото с <a href="https://thispersondoesnotexist.com/image">https://thispersondoesnotexist.com/image</a></li>
+        <li>переход на страницу профиля</li>
+        <li>открытие диалогового окна загрузки фото</li>
+        <li>загрузка фото</li>
+        <li>в строку поиска вбивается фраза из pages.txt</li>
+        <li>переход на страницу с результатами поиска</li>
+        <li>проставляются рандомно лайки на 5 - 15 страницах (количество страниц выбирается рандомно)</li>
+        <li>выход</li>
+      </ul>
+    </li>
+    <li>если авторизация не удалась в базе делается запись</li>
+  </>
+</body>
+
+</html>
